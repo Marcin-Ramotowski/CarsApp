@@ -1,0 +1,22 @@
+<h2>Cars List</h2>
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Marka</th>
+      <th>Model</th>
+      <th>Rocznik</th>
+      <th class="allignment-padding">Części</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let car of cars">
+      <td>{{ car.car_id }}</td>
+      <td>{{ car.make }}</td>
+      <td>{{ car.model }}</td>
+      <td>{{ car.year }}</td>
+      <td><a class="w3-button w3-gray" routerLink="/detail/{{car.car_id}}">Części</a></td>
+    </tr>
+  </tbody>
+</table>
+

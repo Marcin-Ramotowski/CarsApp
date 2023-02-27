@@ -1,0 +1,21 @@
+<h2>Ostatnie naprawy</h2>
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Nazwa</th>
+      <th>Opis</th>
+      <th>Koszt</th>
+      <th>Data naprawy</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let part of parts">
+      <td>{{part.part_id}}</td>
+      <td>{{ part.name }}</td>
+      <td>{{ part.description }}</td>
+      <td>{{ part.cost }}</td>
+      <td>{{ part.date }}</td>
+    </tr>
+  </tbody>
+</table>
