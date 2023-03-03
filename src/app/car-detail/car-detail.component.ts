@@ -1,21 +1,21 @@
-import { Component, Input } from '@angular/core';
-import { Car } from "../car";
+import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
-
 import { CarService } from "../car.service";
 import { Part } from "../part";
-import {Observable} from "rxjs";
-import {PARTS} from "../mock-parts";
 
 @Component({
   selector: 'app-car-detail',
   templateUrl: './car-detail.component.html',
-  styleUrls: ['./car-detail.component.css']
+  styleUrls: ['./car-detail.component.css', '../w3.css']
 })
 
 export class CarDetailComponent {
+
   parts: Part[] = [];
+  newPart: Part = {part_id: 0, car_id: 0, name:'', cost:0, date:''}
+  editingPart: number = 0;
+  carId: number = 0;
 
   constructor(
     private route: ActivatedRoute,
@@ -29,8 +29,28 @@ export class CarDetailComponent {
 
   getParts(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
-    console.log('Last url id:', id)
+    this.carId = id;
     this.carService.getCarParts(id).subscribe(parts =>this.parts=parts);
+  }
+
+  addPart(): void {
+    this.newPart.car_id = this.carId
+    this.carService.addPart(this.newPart);
+    this.newPart =  {part_id: 0, car_id: 0, name:'', cost:0, date:''}
+    location.reload();
+  }
+
+  updatePart(part: Part): void {
+    this.carService.updatePart(part);
+    this.editingPart = 0;
+  }
+
+  deletePart(part: Part): void {
+    this.carService.deletePart(part);
+  }
+
+  enableEditMode(partId: number): void{
+    this.editingPart = partId;
   }
 
   goBack(): void {

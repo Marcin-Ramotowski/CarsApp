@@ -1,21 +1,46 @@
-<h2>Ostatnie naprawy</h2>
+<h2 class="big-margin-top">Ostatnie naprawy</h2>
 <table>
   <thead>
     <tr>
       <th>ID</th>
       <th>Nazwa</th>
-      <th>Opis</th>
       <th>Koszt</th>
-      <th>Data naprawy</th>
+      <th>Data wymiany</th>
+      <th class="allignment-padding">Edytuj</th>
+      <th class="allignment-padding">Usuń</th>
     </tr>
   </thead>
   <tbody>
     <tr *ngFor="let part of parts">
+
+      <ng-container *ngIf="editingPart !== part.part_id; else saveBtn">
       <td>{{part.part_id}}</td>
       <td>{{ part.name }}</td>
-      <td>{{ part.description }}</td>
       <td>{{ part.cost }}</td>
       <td>{{ part.date }}</td>
+      <td><button class="w3-button w3-orange" (click)="enableEditMode(part.part_id)">Edytuj</button></td>
+      <td><button class="w3-button w3-red" (click)="deletePart(part)"> Usuń </button></td>
+      </ng-container>
+
+      <ng-template #saveBtn>
+        <td>{{ part.part_id }}</td>
+        <td><input type="text" name="name" [(ngModel)]="part.name"></td>
+        <td><input type="text" name="cost" [(ngModel)]="part.cost"></td>
+        <td><input type="date" name="date" [(ngModel)]="part.date"></td>
+        <td><button class="w3-button w3-grey" (click)="updatePart(part)">Zapisz</button></td>
+        <td><button class="w3-button w3-red" (click)="deletePart(part)"> Usuń </button></td>
+      </ng-template>
+
     </tr>
   </tbody>
 </table>
+
+<h2 class="big-margin-top">Dodaj część</h2>
+<form class="w3-panel w3-light-blue" (submit)="addPart()" name="newPart">
+  <label class="w3-margin">Nazwa: <input class="w3-bar-block w3-margin" type="text" name="name" [(ngModel)]="newPart.name"></label>
+  <label class="w3-margin">Koszt: <input class="w3-bar-block w3-margin" type="text" name="cost" [(ngModel)]="newPart.cost"></label>
+  <label class="w3-margin">Data: <input class="w3-bar-block w3-margin" type="date" name="date" [(ngModel)]="newPart.date"></label>
+  <button class="w3-margin w3-button w3-light-green" type="submit">Zapisz</button>
+</form>
+
+<button class="w3-button w3-blue w3-margin" (click)="goBack()">Powrót</button>

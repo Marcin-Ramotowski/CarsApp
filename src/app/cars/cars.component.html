@@ -1,4 +1,4 @@
-<h2>Cars List</h2>
+<h2 class="big-margin-top">Lista samochodów</h2>
 <table>
   <thead>
     <tr>
@@ -6,17 +6,42 @@
       <th>Marka</th>
       <th>Model</th>
       <th>Rocznik</th>
-      <th class="allignment-padding">Części</th>
+      <th class="allignment-padding">Naprawy</th>
+      <th class="allignment-padding">Edytuj</th>
+      <th class="allignment-padding">Usuń</th>
     </tr>
   </thead>
   <tbody>
     <tr *ngFor="let car of cars">
-      <td>{{ car.car_id }}</td>
-      <td>{{ car.make }}</td>
-      <td>{{ car.model }}</td>
-      <td>{{ car.year }}</td>
-      <td><a class="w3-button w3-gray" routerLink="/detail/{{car.car_id}}">Części</a></td>
+
+      <ng-container *ngIf="editingCar !== car.car_id; else saveBtn">
+        <td>{{ car.car_id }}</td>
+        <td>{{ car.make }}</td>
+        <td>{{ car.model }}</td>
+        <td>{{ car.year }}</td>
+        <td><a class="w3-button w3-blue" routerLink="/detail/{{car.car_id}}">Naprawy</a></td>
+        <td><button class="w3-button w3-orange" (click)="enableEditMode(car.car_id)">Edytuj</button></td>
+        <td><button class="w3-button w3-red" (click)="deleteCar(car)"> Usuń </button></td>
+      </ng-container>
+
+      <ng-template #saveBtn>
+        <td>{{ car.car_id }}</td>
+        <td><input type="text" name="brand" [(ngModel)]="car.make"></td>
+        <td><input type="text" name="model" [(ngModel)]="car.model"></td>
+        <td><input type="text" name="year" [(ngModel)]="car.year"></td>
+        <td><a class="w3-button w3-blue" routerLink="/detail/{{car.car_id}}">Naprawy</a></td>
+        <td><button class="w3-button w3-grey" (click)="updateCar(car)">Zapisz</button></td>
+        <td><button class="w3-button w3-red" (click)="deleteCar(car)"> Usuń </button></td>
+      </ng-template>
+
     </tr>
   </tbody>
 </table>
 
+<h2 class="big-margin-top">Dodaj samochód</h2>
+<form class="w3-panel w3-light-blue" (submit)="addCar()" name="newCar">
+  <label class="w3-margin">Marka: <input class="w3-bar-block" type="text" name="brand" [(ngModel)]="newCar.make"></label>
+  <label class="w3-margin">Model: <input class="w3-bar-block" type="text" name="model" [(ngModel)]="newCar.model"></label>
+  <label class="w3-margin">Rocznik: <input class="w3-bar-block" type="number" name="year" [(ngModel)]="newCar.year"></label>
+  <button class="w3-margin w3-button w3-light-green" type="submit">Zapisz</button>
+</form>
